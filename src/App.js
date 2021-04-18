@@ -24,7 +24,7 @@ function reducer(state, action) {
   }
 }
 
-function App() {
+export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   async function fetchNotes() {
@@ -33,7 +33,7 @@ function App() {
         query: listNotes
       })
       dispatch({ 
-        type: 'SET_NOTES ',
+        type: 'SET_NOTES',
         notes: notesData.data.listNotes.items
       }) 
     } catch (err) {
@@ -75,5 +75,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
