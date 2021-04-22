@@ -5,7 +5,8 @@ import 'antd/dist/antd.css'
 import { listNotes } from './graphql/queries'
 import { 
   createNote as CreateNote, 
-  deleteNote as DeleteNote 
+  deleteNote as DeleteNote,
+  updateNote as UpdateNote 
 } from './graphql/mutations'
 import { v4 as uuid } from 'uuid'
 import { List, Input, Button } from 'antd'
@@ -54,7 +55,7 @@ export default function App() {
         query: CreateNote,
         variables: { input: note }
       })
-      console.log('Success!! Created note')
+      console.log('Successfully created note')
     } catch (err) {
       console.log("error: ", err)
     }
@@ -72,7 +73,7 @@ export default function App() {
         query: DeleteNote,
         variables: { input: { id } }
       })
-      console.log('successfully deleted note!')
+      console.log('Successfully deleted note!')
     } catch (err) {
       console.log({ err })
     }
@@ -90,6 +91,22 @@ export default function App() {
     } catch (err) {
       console.log('error: ', err)
       dispatch({ type: 'ERROR' })
+    }
+  }
+
+  async function updateNote(note) {
+    const index = state.notes.findIndex(n => n.id === note.id)
+    const notes = [ ...state.notes ]
+    notes[index].completed = !note.completed
+    dispatch({ type: 'SET_NOTES', notes })
+    try {
+      await API.graphql({
+        query: UpdateNote,
+        variables: { input: { id: note.id, completed: notes[index].completed }}
+      })
+      console.log('Note successfully updated!')
+    } catch(err) {
+      console.log('error: ', err)
     }
   }
 
