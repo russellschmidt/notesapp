@@ -123,7 +123,15 @@ export default function App() {
       <List.Item 
         style={styles.item}
         actions={[
-          <p style={styles.p} onClick={() => deleteNote(item)}>Delete</p>
+          <p 
+            style={styles.p} 
+            onClick={() => deleteNote(item)}
+          >delete</p>,
+          <p 
+            style={styles.p} 
+            onClick={() => updateNote(item)}
+          >{item.completed ? 'completed' : 'mark completed'}
+          </p>
         ]}
       >
         <List.Item.Meta 
